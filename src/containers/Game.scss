@@ -1,0 +1,173 @@
+$scale: 0.75;
+.app {
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  color: red;
+}
+
+.flex-container {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.cell {
+  height: 48px * $scale;
+  width:  48px * $scale;
+  // border: 1px solid black;
+  background: black;
+  position: relative;
+  font-size: 12px;
+  text-align: center;
+  transition: all 1s;
+  div {
+    margin: 0 auto;
+  }
+
+  .entity {
+    height: 48px * $scale;
+    width:  48px * $scale;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    &.enemy {
+      &.slime {
+        height: 52px * $scale;
+        top: -5px * $scale;
+        background-image: url('../assets/images/enemies/slime/animation001.gif');
+        z-index: 20;
+      }
+      &.skeleton {
+        height: 52px * $scale;
+        top: -5px * $scale;
+        background-image: url('../assets/images/enemies/skeleton/animation002.gif');
+        z-index: 20;
+      }
+    }
+    &.player {
+      background-image: url('../assets/images/player/player001.gif');
+      z-index: 20;
+      top: -10px  * $scale;
+    }
+    &.left {
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+    }
+  }
+
+  .floor {
+    height: 48px * $scale;
+    width:  48px * $scale;
+    background-size: cover;
+    &.tile00 {
+      background-image: url('../assets/images/floor/tile000.png');
+    }
+    &.tile01 {
+      background-image: url('../assets/images/floor/tile001.png');
+    }
+    &.tile02 {
+      background-image: url('../assets/images/floor/tile002.png');
+    }
+    &.tile03 {
+      background-image: url('../assets/images/floor/tile003.png');
+    }
+    &.tile04 {
+      background-image: url('../assets/images/floor/tile004.png');
+    }
+    &.tile05 {
+      background-image: url('../assets/images/floor/tile005.png');
+    }
+  }
+
+  .wall {
+    height: 84px * $scale;
+    width:  48px * $scale;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-size: cover;
+    &.tile00 {
+      background-image: url('../assets/images/wall/tile000.png');
+    }
+    &.tile01 {
+      background-image: url('../assets/images/wall/tile001.png');
+    }
+    &.tile02 {
+      background-image: url('../assets/images/wall/tile002.png');
+    }
+    &.tile03 {
+      background-image: url('../assets/images/wall/tile003.png');
+    }
+    &.tile04 {
+      background-image: url('../assets/images/wall/tile004.png');
+    }
+    &.tile05 {
+      background-image: url('../assets/images/wall/tile005.png');
+    }
+    &.tile06 {
+      background-image: url('../assets/images/wall/tile006.png');
+    }
+    &.tile07 {
+      background-image: url('../assets/images/wall/tile007.png');
+    }
+    &.tile08 {
+      background-image: url('../assets/images/wall/tile008.png');
+    }
+    &.tile09 {
+      background-image: url('../assets/images/wall/tile009.png');
+    }
+    &.tile10 {
+      background-image: url('../assets/images/wall/tile010.png');
+    }
+    &.tile11 {
+      background-image: url('../assets/images/wall/tile011.png');
+    }
+    &.tile12 {
+      background-image: url('../assets/images/wall/tile012.png');
+    }
+    &.tile13 {
+      background-image: url('../assets/images/wall/tile013.png');
+    }
+    &.tile14 {
+      background-image: url('../assets/images/wall/tile014.png');
+    }
+    &.tile15 {
+      background-image: url('../assets/images/wall/tile015.png');
+    }
+  }
+
+  &.door {
+    background-size: cover;
+    width: 48px * $scale;
+    height: 48px * $scale;
+    background-image: url('../assets/images/floor/tile000.png');
+  }
+
+  .door {
+    &.tile00 {
+      background-image: url('../assets/images/wall/door000.png');
+    }
+    &.tile01 {
+      background-image: url('../assets/images/wall/door001.png');
+      width: 14px * $scale;
+      height: 84px * $scale;
+      left: 16px * $scale;
+      top:0;
+    }
+    // background: red;
+    height: 48px * $scale;
+    width:  48px * $scale;
+    position: absolute;
+    background-size: cover;
+    top: 6px;
+    left: 0;
+    z-index: 10;
+  }
+}
+
