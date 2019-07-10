@@ -1,0 +1,36 @@
+.life-bar {
+  position: absolute;
+  left: 84px;
+  top: 3px;
+  width: 94px;
+  height: 15px;
+  background-color: white;
+  z-index: 5;
+  .percentage {
+    position: absolute;
+    height: 15px;
+    background-color: red;
+    z-index: 5;
+  }
+  .glass {
+    position: absolute;
+    background: url("../assets/images/hud/life-bar.png") no-repeat;
+    z-index: 10;
+    width: 94px;
+    height: 16px;
+  }
+  .value {
+    position: absolute;
+    top:4px;
+    width: 94px;
+    height: 16px;
+    z-index: 20;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 200;
+
+    color: white;
+    text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+
+  }
+}
