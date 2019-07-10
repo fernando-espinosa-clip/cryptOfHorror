@@ -1,7 +1,11 @@
-$scale: 0.75;
+$scale: 0.85;
 .app {
-  display: flex;
-  justify-content: center;
+ /* display: flex;
+  justify-content: center; */
+  display: block;
+  position: relative;
+  margin: 0 auto;
+
 }
 
 .row {
@@ -13,6 +17,52 @@ $scale: 0.75;
 .flex-container {
   border: 1px solid rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  position: relative;
+  width: 1224px;
+  margin: 0 auto;
+  .hud {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 100;
+    font-family: 'Press Start 2P', cursive;
+    .character-info{
+      position: absolute;
+      .background {
+        position: absolute;
+        width: 211px;
+        height: 65px;
+        background-image: url('../assets/images/hud/char-hud.png');
+        z-index: 10;
+      }
+    }
+    div {
+      display: inline-block;
+    }
+    .text {
+      position: absolute;
+      top:8px;
+      left:8px;
+      font-size: 9px;
+      color: white;
+      text-shadow: 2px 2px 1px rgba(0,0,0,0.68);
+    }
+    .l-frame {
+      width: 24px;
+      height: 24px;
+      background-image: url('../assets/images/hud/l-frame.png');
+    }
+    .r-frame {
+      width: 24px;
+      height: 24px;
+      background-image: url('../assets/images/hud/r-frame.png');
+    }
+    .m-frame {
+      width: 24px;
+      height: 24px;
+      background-image: url('../assets/images/hud/m-frame.png');
+    }
+  }
 }
 
 .cell {

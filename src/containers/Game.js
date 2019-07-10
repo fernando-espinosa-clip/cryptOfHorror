@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import Viewport from '../components/Viewport'
+import LifeBar from '../components/LifeBar'
 import './Game.scss'
 import { createEntities, moveEntity } from '../helpers/entities'
 import { createMap } from '../helpers/dungeon'
@@ -116,10 +117,16 @@ class Game extends Component {
     }
 
     render() {
-        const { map, viewPortCords, viewPort: {width, height} } = this.state;
+        const { map, viewPortCords, viewPort: {width, height}, movableEntities } = this.state;
         return (
             <div className='app'>
                 <div className='flex-container'>
+                    <div className='hud'>
+                        <div className='character-info'>
+                            <div className='background'/>
+                            <LifeBar value={movableEntities[0].hp} max={movableEntities[0].hpMax} />
+                        </div>
+                    </div>
                    <Viewport viewPortCords={viewPortCords} width={width} height={height} map={map} />
                 </div>
             </div>

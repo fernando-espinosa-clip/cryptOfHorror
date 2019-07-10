@@ -47,7 +47,8 @@ export const createEntities = (gameMap, level = 1) => {
         {
             type: 'player',
             direction: 'left',
-            hp: 100,
+            hp: 25,
+            hpMax: 30,
             str: 5,
             con: 5,
             armor: armors[0],
