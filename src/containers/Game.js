@@ -3,8 +3,8 @@ import _ from 'lodash'
 import Viewport from '../components/Viewport'
 import LifeBar from '../components/LifeBar'
 import './Game.scss'
-import { createEntities, moveEntity } from '../helpers/entities'
-import { createMap } from '../helpers/dungeon'
+import { createEntities, moveEntity, getEntitiesByType } from '../helpers/entities'
+import { createMap, madeShadowMist } from '../helpers/dungeon'
 
 
 const createLevel = (levelNumber = 1) => {
@@ -39,15 +39,6 @@ const moveViewport = (vector, state) => {
     return state;
 };
 
-const getEntitiesByType = (map, type) => {
-    let entities = [];
-    map.forEach(r => {
-        r.filter(r => r.entity && type.includes(r.entity.type)).forEach(r => {
-            entities.push(r.entity)
-        })
-    });
-    return entities;
-};
 
 const playerInput = (vector, state = {}) => {
     const { map } = state;
@@ -130,10 +121,7 @@ class Game extends Component {
     render() {
         const { map, viewPortCords, viewPort: {width, height} } = this.state;
         const player = getEntitiesByType(map, ['player']).pop();
-        const newEntities = map.map((row, i) => row.map((cell, j) => {
-            cell.distanceFromPlayer = (Math.abs(player.position[1] - i)) + (Math.abs(player.position[0] - j));
-            return cell;
-        }));
+        madeShadowMist(map);
         return (
             <div className='app'>
                 <div className='flex-container'>
@@ -144,7 +132,7 @@ class Game extends Component {
                             <LifeBar value={player.hp} max={player.hpMax} />
                         </div>
                     </div>
-                   <Viewport viewPortCords={viewPortCords} width={width} height={height} map={newEntities} />
+                   <Viewport viewPortCords={viewPortCords} width={width} height={height} map={map} />
                 </div>
             </div>
         )

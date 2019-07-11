@@ -1,4 +1,5 @@
 import _ from "lodash";
+import {getEntitiesByType} from "./entities";
 
 export const MAP_WIDTH = 70;
 export const MAP_HEIGHT = 50;
@@ -166,4 +167,23 @@ export const createRoomsFromSeed = (grid, {x, y, width, height}, range = ROOM_SI
         }
     });
     return {grid, placedRooms};
+};
+
+export const madeShadowMist = (map) => {
+    const player = getEntitiesByType(map, ['player']).pop();
+    return map.map((row, i) => row.map((cell, j) => {
+        const distance  = (Math.abs(player.position[1] - i)) + (Math.abs(player.position[0] - j));
+        cell.distanceFromPlayer = distance;
+        if (distance <= 5) {
+            cell.visited = true
+        }
+        return cell;
+    }));
+};
+
+export const madeShadowMist_ = (map) => {
+    const player = getEntitiesByType(map, ['player']).pop();
+    map.forEach((row, i) => row.forEach((cell, j) => {
+        cell.distanceFromPlayer = (Math.abs(player.position[1] - i)) + (Math.abs(player.position[0] - j));
+    }));
 };

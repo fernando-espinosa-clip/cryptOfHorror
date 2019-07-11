@@ -28,6 +28,7 @@ $scale: 0.85;
   position: relative;
   width: 1224px;
   margin: 0 auto;
+  background-color: #000;
   .hud {
     position: absolute;
     top: 5px;
@@ -83,11 +84,11 @@ $scale: 0.85;
   height: 48px * $scale;
   width:  48px * $scale;
   // border: 1px solid black;
-  background: black;
   position: relative;
   font-size: 12px;
   text-align: center;
-  transition: all 1s;
+  // transition: all 1s;
+  background-color: #000;
   div {
     margin: 0 auto;
   }
@@ -219,9 +220,9 @@ $scale: 0.85;
     }
     &.tile01 {
       background-image: url('../assets/images/wall/door001.png');
-      width: 14px * $scale;
-      height: 84px * $scale;
-      left: 16px * $scale;
+      /* width: 14px * $scale;
+      height: 84px * $scale; */
+      left: 1px * $scale;
       top:0;
     }
     // background: red;

@@ -1,5 +1,6 @@
 import _ from "lodash";
 import {MAP_HEIGHT, MAP_WIDTH} from './dungeon'
+import {madeShadowMist} from './dungeon'
 
 export const createEntities = (gameMap, level = 1) => {
     // 1. create the entities
@@ -131,7 +132,7 @@ export const createEntities = (gameMap, level = 1) => {
         }
     });
 
-    return {map: gameMap, playerPosition, movableEntities };
+    return {map: madeShadowMist(gameMap), playerPosition, movableEntities };
 };
 
 export const moveEntity = (vector, entity = {}, state = {}) => {
@@ -173,4 +174,14 @@ export const moveEntity = (vector, entity = {}, state = {}) => {
     map[deltaY][deltaX].entity = entity;
     entity.position = [deltaX, deltaY];
     return true;
+};
+
+export const getEntitiesByType = (map, type) => {
+    let entities = [];
+    map.forEach(r => {
+        r.filter(r => r.entity && type.includes(r.entity.type)).forEach(r => {
+            entities.push(r.entity)
+        })
+    });
+    return entities;
 };

@@ -12,20 +12,29 @@ const Viewport = (props) => {
                             const subType = cell.entity && cell.entity.subType ? cell.entity.subType : '';
                             const distance = cell.distanceFromPlayer;
                             let opacityValue = 1;
-                            if (distance > 8) {
+                            if (distance > 3) {
                                 opacityValue = 0.8;
-                                if (distance > 9)  opacityValue = 0.6;
-                                if (distance > 10)  opacityValue = 0;
+                                if (distance > 4)  opacityValue = 0.6;
+                                if (distance === 5)  opacityValue = 0.5;
+                                if (distance > 5) {
+                                    opacityValue = 0;
+                                    if (cell.visited) opacityValue = 0.3;
+                                }
 
                             }
                             return (
-                                <div className={`cell ${cell.type}`} key={i}>
+                                <div style={cell.type === 'door' ? {opacity: opacityValue, zIndex: index} : {}}
+                                     className={`cell ${cell.type}`} key={i}>
                                     {cell.type !== 'nothing' &&
-                                    <div style={{opacity: opacityValue}}
+                                    <div
+                                        style={{opacity: opacityValue, zIndex: index}}
                                          className={`${cell.type} ${cell.variant ? cell.variant : ''}`}>
                                         {displayTypes && cell.type}
                                     </div>}
-                                    {cell.entity && <div className={`entity ${cell.entity.type} ${cell.entity.direction} ${subType}`}/>}
+                                    {cell.entity &&
+                                    <div
+                                        style={{opacity: opacityValue}}
+                                        className={`entity ${cell.entity.type} ${cell.entity.direction} ${subType}`}/>}
 
                                 </div>
                             )
