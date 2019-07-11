@@ -5,6 +5,7 @@ import LifeBar from '../components/LifeBar'
 import './Game.scss'
 import { createEntities, moveEntity, getEntitiesByType } from '../helpers/entities'
 import { createMap, madeShadowMist } from '../helpers/dungeon'
+import Checkbox from '../components/Checkbox'
 
 
 const createLevel = (levelNumber = 1) => {
@@ -17,7 +18,9 @@ const createLevel = (levelNumber = 1) => {
         viewPort: {
             width: 30,
             height: 18,
-        }
+        },
+        showShadows: true,
+        displayDevInfo: false,
     };
     const [px, py] = state.playerPosition;
     state = moveViewport([px - Math.floor(state.viewPort.width / 2), py - Math.floor(state.viewPort.height / 2)], state);
@@ -69,7 +72,8 @@ const playerInput = (vector, state = {}) => {
                 break;
         }
         if (willMove) moveEntity(vector, entity, state)
-    })
+    });
+    madeShadowMist(map)
 
 };
 
@@ -119,9 +123,8 @@ class Game extends Component {
     }
 
     render() {
-        const { map, viewPortCords, viewPort: {width, height} } = this.state;
+        const { map, viewPortCords, viewPort: {width, height}, showShadows, displayDevInfo } = this.state;
         const player = getEntitiesByType(map, ['player']).pop();
-        madeShadowMist(map);
         return (
             <div className='app'>
                 <div className='flex-container'>
@@ -131,8 +134,26 @@ class Game extends Component {
                             <div className={`weapon ${player.weapon.cssClass}`}/>
                             <LifeBar value={player.hp} max={player.hpMax} />
                         </div>
+                        <div className='dev-info'>
+                            <Checkbox
+                                label='shadows'
+                                value={showShadows}
+                                onClick={() => this.setState({ showShadows: !showShadows })}
+                            />
+                            <Checkbox
+                                label='Extra info.'
+                                value={displayDevInfo}
+                                onClick={() => this.setState({ displayDevInfo: !displayDevInfo })}
+                            />
+                        </div>
                     </div>
-                   <Viewport viewPortCords={viewPortCords} width={width} height={height} map={map} />
+                   <Viewport
+                       viewPortCords={viewPortCords}
+                       width={width}
+                       height={height}
+                       map={map}
+                       showShadows={showShadows}
+                       displayDevInfo={displayDevInfo} />
                 </div>
             </div>
         )

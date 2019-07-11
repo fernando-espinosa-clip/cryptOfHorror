@@ -2,8 +2,7 @@ import React from 'react';
 import { VISITED_PLACES_OPACITY } from '../helpers/dungeon'
 
 const Viewport = (props) => {
-    const { width, height, map, viewPortCords: [xcor, ycor] } = props;
-    const displayTypes = false;
+    const { width, height, map, viewPortCords: [xcor, ycor], showShadows, displayDevInfo } = props;
     return (
         map.filter((v, y) => (y >= ycor && y < ycor + height)).map((element, index) => {
             return (
@@ -13,7 +12,7 @@ const Viewport = (props) => {
                             const subType = cell.entity && cell.entity.subType ? cell.entity.subType : '';
                             const distance = cell.distanceFromPlayer;
                             let opacityValue = 1;
-                            if (distance > 3) {
+                            if (distance > 3 && showShadows) {
                                 if (distance === 4)  opacityValue = 0.7;
                                 if (distance === 5)  opacityValue = 0.5;
                                 if (distance > 5) {
@@ -28,13 +27,18 @@ const Viewport = (props) => {
                                     {cell.type !== 'nothing' &&
                                     <div
                                         style={{opacity: opacityValue, zIndex: index}}
-                                         className={`${cell.type} ${cell.variant ? cell.variant : ''}`}>
-                                        {displayTypes && cell.type}
-                                    </div>}
+                                         className={`${cell.type} ${cell.variant ? cell.variant : ''}`}/>}
                                     {cell.entity &&
                                     <div
                                         style={{opacity: opacityValue === VISITED_PLACES_OPACITY ? 0 : opacityValue}}
-                                        className={`entity ${cell.entity.type} ${cell.entity.direction} ${subType}`}/>}
+                                        className={`entity ${cell.entity.type} ${cell.entity.direction} ${subType}`}
+                                    />}
+                                    {(displayDevInfo) &&
+                                    (<div style={{zIndex: index}} className='extra-info'>
+                                            {cell.type}<br/>
+                                            {`[${cell.position[0]},${cell.position[1]}]`}
+                                    </div>)}
+
 
                                 </div>
                             )
