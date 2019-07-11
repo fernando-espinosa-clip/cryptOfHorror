@@ -5,6 +5,7 @@ export const MAP_WIDTH = 70;
 export const MAP_HEIGHT = 50;
 export const MAX_ROOMS = 50;
 export const ROOM_SIZE_RANGE = [4, 12];
+export const VISITED_PLACES_OPACITY = 0.3;
 
 export const growMap = (grid, seedRooms, counter = 1, maxRooms = MAX_ROOMS) => {
     if (counter + seedRooms.length > maxRooms || !seedRooms.length) {

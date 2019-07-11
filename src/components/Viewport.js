@@ -1,4 +1,5 @@
 import React from 'react';
+import { VISITED_PLACES_OPACITY } from '../helpers/dungeon'
 
 const Viewport = (props) => {
     const { width, height, map, viewPortCords: [xcor, ycor] } = props;
@@ -13,12 +14,11 @@ const Viewport = (props) => {
                             const distance = cell.distanceFromPlayer;
                             let opacityValue = 1;
                             if (distance > 3) {
-                                opacityValue = 0.8;
-                                if (distance > 4)  opacityValue = 0.6;
+                                if (distance === 4)  opacityValue = 0.7;
                                 if (distance === 5)  opacityValue = 0.5;
                                 if (distance > 5) {
                                     opacityValue = 0;
-                                    if (cell.visited) opacityValue = 0.3;
+                                    if (cell.visited) opacityValue = VISITED_PLACES_OPACITY;
                                 }
 
                             }
@@ -33,7 +33,7 @@ const Viewport = (props) => {
                                     </div>}
                                     {cell.entity &&
                                     <div
-                                        style={{opacity: opacityValue}}
+                                        style={{opacity: opacityValue === VISITED_PLACES_OPACITY ? 0 : opacityValue}}
                                         className={`entity ${cell.entity.type} ${cell.entity.direction} ${subType}`}/>}
 
                                 </div>
