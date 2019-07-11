@@ -14,6 +14,14 @@ $scale: 0.85;
   color: red;
 }
 
+.weapon {
+  width: 24px;
+  height: 24px;
+  &.rs {
+    background-image: url("../assets/images/swords/rusty.png");
+  }
+}
+
 .flex-container {
   border: 1px solid rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -28,6 +36,12 @@ $scale: 0.85;
     font-family: 'Press Start 2P', cursive;
     .character-info{
       position: absolute;
+      .weapon {
+        position: absolute;
+        top: 30px;
+        left: 76px;
+        z-index: 10;
+      }
       .background {
         position: absolute;
         width: 211px;

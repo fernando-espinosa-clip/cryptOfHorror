@@ -39,34 +39,45 @@ const moveViewport = (vector, state) => {
     return state;
 };
 
+const getEntitiesByType = (map, type) => {
+    let entities = [];
+    map.forEach(r => {
+        r.filter(r => r.entity && type.includes(r.entity.type)).forEach(r => {
+            entities.push(r.entity)
+        })
+    });
+    return entities;
+};
+
 const playerInput = (vector, state = {}) => {
-    const { movableEntities } = state;
+    const { map } = state;
     if (moveEntity(vector, state.movableEntities[0], state)) moveViewport(vector, state);
-    movableEntities.filter(e => e.type !== 'player').forEach(e => {
-      let dice = _.random(0,100);
-      let willMove = false;
-      let vector = [0,0];
-      switch(e.subType) {
-          case 'slime':
-              willMove = dice <  20;
-              dice = _.random(0,100);
-              if (dice < 85) vector = [0,-1];
-              if (dice < 70) vector = [1,0];
-              if (dice < 35) vector = [-1,0];
-              if (dice >= 85) vector = [0,1];
-              break;
-          case 'skeleton':
-              willMove = dice < 60;
-              dice = _.random(0,100);
-              if (dice < 75) vector = [0,-1];
-              if (dice < 50) vector = [1,0];
-              if (dice < 25) vector = [-1,0];
-              if (dice >= 75) vector = [0,1];
-              break;
-          default:
-              break;
-      }
-        if (willMove) moveEntity(vector, e, state)
+    const entities = getEntitiesByType(map,['enemy', 'player']);
+    entities.forEach(entity => {
+        let dice = _.random(0,100);
+        let willMove = false;
+        let vector = [0,0];
+        switch(entity.subType) {
+            case 'slime':
+                willMove = dice <  20;
+                dice = _.random(0,100);
+                if (dice < 85) vector = [0,-1];
+                if (dice < 70) vector = [1,0];
+                if (dice < 35) vector = [-1,0];
+                if (dice >= 85) vector = [0,1];
+                break;
+            case 'skeleton':
+                willMove = dice < 60;
+                dice = _.random(0,100);
+                if (dice < 75) vector = [0,-1];
+                if (dice < 50) vector = [1,0];
+                if (dice < 25) vector = [-1,0];
+                if (dice >= 75) vector = [0,1];
+                break;
+            default:
+                break;
+        }
+        if (willMove) moveEntity(vector, entity, state)
     })
 
 };
@@ -117,17 +128,23 @@ class Game extends Component {
     }
 
     render() {
-        const { map, viewPortCords, viewPort: {width, height}, movableEntities } = this.state;
+        const { map, viewPortCords, viewPort: {width, height} } = this.state;
+        const player = getEntitiesByType(map, ['player']).pop();
+        const newEntities = map.map((row, i) => row.map((cell, j) => {
+            cell.distanceFromPlayer = (Math.abs(player.position[1] - i)) + (Math.abs(player.position[0] - j));
+            return cell;
+        }));
         return (
             <div className='app'>
                 <div className='flex-container'>
                     <div className='hud'>
                         <div className='character-info'>
                             <div className='background'/>
-                            <LifeBar value={movableEntities[0].hp} max={movableEntities[0].hpMax} />
+                            <div className={`weapon ${player.weapon.cssClass}`}/>
+                            <LifeBar value={player.hp} max={player.hpMax} />
                         </div>
                     </div>
-                   <Viewport viewPortCords={viewPortCords} width={width} height={height} map={map} />
+                   <Viewport viewPortCords={viewPortCords} width={width} height={height} map={newEntities} />
                 </div>
             </div>
         )

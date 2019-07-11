@@ -15,13 +15,19 @@ export const createEntities = (gameMap, level = 1) => {
 
     const enemies = [];
     for (let i = 0; i < 7; i++) {
+        const enemyLevel = _.random(level, _.random(level - 1 ? level - 1 : level, level + 1));
         enemies.push({
             health: level * 30 + 40,
             // half of the enememies will be a level higher or lower (except on
             // level 1, where ~1/4 enemies are a level higher)
-            level: _.random(level, _.random(level - 1 ? level - 1 : level, level + 1)),
+            level: enemyLevel,
             type: 'enemy',
-            subType: _.random(0,1) === 0 ? 'skeleton' : 'slime'
+            hp: 15 * enemyLevel,
+            subType: _.random(0,1) === 0 ? 'skeleton' : 'slime',
+            weapon: {
+                baseDamage: () => (_.random(2,5) + 2 * enemyLevel),
+                criticalDamage: 5 + 2 * enemyLevel,
+            }
         });
     }
 
@@ -43,18 +49,6 @@ export const createEntities = (gameMap, level = 1) => {
         }
     ];
 
-    const players = [
-        {
-            type: 'player',
-            direction: 'left',
-            hp: 25,
-            hpMax: 30,
-            str: 5,
-            con: 5,
-            armor: armors[0],
-        }
-    ];
-
     const potions = [];
     for (let i = 0; i < 5; i++) {
         potions.push({ type: 'potion' });
@@ -62,56 +56,66 @@ export const createEntities = (gameMap, level = 1) => {
 
     const weaponTypes = [
         {
-            name: 'Laser Pistol',
-            damage: 15
+            name: 'Rusty Sword',
+            baseDamage: () => _.random(5,10),
+            criticalDamage: 10,
+            cssClass: 'rs',
         },
         {
-            name: 'Laser Rifle',
-            damage: 19
+            name: 'Steel Sword',
+            baseDamage: () => _.random(10,12),
+            criticalDamage: 13,
+            cssClass: 'sw',
         },
         {
-            name: 'Plasma Pistol',
-            damage: 26
+            name: 'Bronze Sword',
+            baseDamage: () => _.random(11,15),
+            criticalDamage: 15,
+            cssClass: 'bw',
         },
         {
-            name: 'Plasma Rifle',
-            damage: 28
+            name: 'Steel Axe',
+            baseDamage: () => _.random(10,13),
+            criticalDamage: 15,
+            cssClass: 'sa',
         },
         {
-            name: 'Electric ChainSaw',
-            damage: 31
+            name: 'Bronze Axe',
+            baseDamage: () => _.random(10,18),
+            criticalDamage: 18,
+            cssClass: 'ba',
         },
-        {
-            name: 'Railgun',
-            damage: 33
-        },
-        {
-            name: 'Dark Energy Cannon',
-            damage: 40
-        },
-        {
-            name: 'B.F.G',
-            damage: 43
-        }
+
     ];
 
     const weapons = [];
     // weapon types will vary based on the level passed to the parent function
-    const qualifying = weaponTypes
+    /* const qualifying = weaponTypes
         .filter(weapon => weapon.damage < level * 10 + 10)
-        .filter(weapon => weapon.damage > level * 10 - 10);
-    for (let i = 0; i < 3; i++) {
-        const weapon = Object.assign({}, qualifying[_.random(0, qualifying.length - 1)]);
+        .filter(weapon => weapon.damage > level * 10 - 10); */
+    for (let i = 0; i < _.random(1, 3); i++) {
+        const weapon = Object.assign({}, weaponTypes[_.random(0, weaponTypes.length - 1)]);
         weapon.type = 'weapon';
         weapons.push(weapon);
     }
+
+    const players = [
+        {
+            type: 'player',
+            direction: 'left',
+            hp: 30,
+            hpMax: 30,
+            armor: armors[0],
+            weapon: weaponTypes[0]
+        }
+    ];
 
     // 2. randomly place all the entities on to floor cells on the game map.
 
     // we'll need to return the players starting co-ordinates
     let playerPosition = [];
     // [potions, enemies, weapons, exits, players, bosses].forEach(entities => {
-    [players, enemies].forEach(entities => {
+    [players, enemies, weapons].forEach(entities => {
         while (entities.length) {
             const x = Math.floor(Math.random() * MAP_WIDTH);
             const y = Math.floor(Math.random() * MAP_HEIGHT);
@@ -154,9 +158,14 @@ export const moveEntity = (vector, entity = {}, state = {}) => {
     if (entity.type === 'player') {
         console.log(map[deltaY][deltaX].entity)
     }
-    if (map[deltaY][deltaX].type !== 'floor' || map[deltaY][deltaX].entity){
-        /* if (entity.type === 'player')  console.clear();
-        console.log('Entity',entity.type,'Delta Entity', map[deltaY][deltaX].type); */
+    if (map[deltaY][deltaX].type !== 'floor') return false;
+
+    if (map[deltaY][deltaX].entity){
+        if (map[deltaY][deltaX].entity.type === 'enemy' || map[deltaY][deltaX].entity.type === 'player') {
+            let enemy = map[deltaY][deltaX];
+            enemy.entity.hp -= entity.weapon.baseDamage();
+            if ( enemy.entity.hp <= 0) enemy.entity = null
+        }
         return false;
     }
     if (entity.type === 'player') state.playerPosition = [deltaX, deltaY];
