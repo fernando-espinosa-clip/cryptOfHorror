@@ -5,7 +5,7 @@ export const MAP_WIDTH = 70;
 export const MAP_HEIGHT = 50;
 export const MAX_ROOMS = 50;
 export const ROOM_SIZE_RANGE = [4, 12];
-export const VISITED_PLACES_OPACITY = 0.3;
+export const VISITED_PLACES_OPACITY = 0.4;
 
 export const growMap = (grid, seedRooms, counter = 1, maxRooms = MAX_ROOMS) => {
     if (counter + seedRooms.length > maxRooms || !seedRooms.length) {
@@ -24,7 +24,7 @@ export const createMap = () => {
     for (let y = 0; y < MAP_HEIGHT; y++) {
         map.push([]);
         for (let x = 0; x < MAP_WIDTH; x++) {
-            map[y].push({ type: 'nothing',  opacity: _.random(0.5, 0.8)})
+            map[y].push({ type: 'nothing',  opacity: _.random(0.5, 0.8), id: _.random(0,1000000)})
         }
     }
 
@@ -81,7 +81,7 @@ export const buildWalls = (grid ) => {
     for (let y = MAP_HEIGHT - 1; y >= 0; y--) {
         for (let x = MAP_WIDTH - 1; x >= 0 ; x--) {
             const wall = isWall(grid, x, y);
-            if (wall.result) grid[y][x] = {type: 'wall', variant: wallTypes(wall.isButton)};
+            if (wall.result) grid[y][x] = {...grid[y][x], ...{type: 'wall', variant: wallTypes(wall.isButton)}};
         }
     }
     return grid;
@@ -111,7 +111,7 @@ export const isValidRoomPlacement = (grid, {x, y, width = 1, height = 1}) => {
 export const placeCells = (grid, {x, y, width = 1, height = 1}, type = 'floor', variant = '') => {
     for (let i = y; i < y + height; i++) {
         for (let j = x; j < x + width; j++) {
-            grid[i][j] = {type, variant: variant && {}.toString.call(variant) === '[object Function]' ? variant(j, i) : variant};
+            grid[i][j] = {...grid[i][j], ...{type, variant: variant && {}.toString.call(variant) === '[object Function]' ? variant(j, i) : variant}};
         }
     }
     return grid;
@@ -175,7 +175,7 @@ export const madeShadowMist = (map) => {
     return map.map((row, i) => row.map((cell, j) => {
         const distance  = (Math.abs(player.position[1] - i)) + (Math.abs(player.position[0] - j));
         cell.distanceFromPlayer = distance;
-        cell.position = [i, j];
+        cell.position = [j, i];
         if (distance <= 5) cell.visited = true;
         return cell;
     }));

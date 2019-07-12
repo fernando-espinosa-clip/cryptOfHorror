@@ -122,10 +122,12 @@ export const createEntities = (gameMap, level = 1) => {
             const y = Math.floor(Math.random() * MAP_HEIGHT);
             if (gameMap[y][x].type === 'floor') {
                 const entity = entities.pop();
+                entity.id = _.random(1, 100000);
                 entity.position = [x, y];
                 if (entity.type === 'player') {
                     playerPosition = [x, y];
                 }
+                if (entity.type === 'weapon') console.log('weapon',entity.position);
                 if (entity.type === 'enemy' || entity.type === 'player') movableEntities.push(entity);
                 gameMap[y][x].entity = entity;
             }
@@ -156,7 +158,7 @@ export const moveEntity = (vector, entity = {}, state = {}) => {
         map[deltaY][deltaX].type = 'floor';
         return false;
     }
-    if (entity.type === 'player') {
+    if (entity.type === 'player' && map[deltaY][deltaX].entity) {
         console.log(map[deltaY][deltaX].entity)
     }
     if (map[deltaY][deltaX].type !== 'floor') return false;

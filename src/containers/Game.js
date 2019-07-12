@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Sound from 'react-sound'
 import _ from 'lodash'
 import Viewport from '../components/Viewport'
 import LifeBar from '../components/LifeBar'
@@ -6,6 +7,7 @@ import './Game.scss'
 import { createEntities, moveEntity, getEntitiesByType } from '../helpers/entities'
 import { createMap, madeShadowMist } from '../helpers/dungeon'
 import Checkbox from '../components/Checkbox'
+import music from '../assets/sound/music/DiscoDescent.mp3'
 
 
 const createLevel = (levelNumber = 1) => {
@@ -22,8 +24,8 @@ const createLevel = (levelNumber = 1) => {
         showShadows: true,
         displayDevInfo: false,
     };
-    const [px, py] = state.playerPosition;
-    state = moveViewport([px - Math.floor(state.viewPort.width / 2), py - Math.floor(state.viewPort.height / 2)], state);
+    // const [px, py] = state.playerPosition;
+    centerViewport(state); // moveViewport([px - Math.floor(state.viewPort.width / 2), py - Math.floor(state.viewPort.height / 2)], state);
     return state;
 };
 
@@ -42,10 +44,20 @@ const moveViewport = (vector, state) => {
     return state;
 };
 
+const centerViewport = (state) => {
+    const { viewPort, map, viewPortCords } = state;
+    const player = getEntitiesByType(map, ['player']).pop();
+    const midWidth = Math.floor(viewPort.width/2);
+    const midHeight = Math.floor(viewPort.height/2);
+    viewPortCords[0] = player.position[0] - midWidth;
+    viewPortCords[1] = player.position[1] - midHeight;
+};
+
 
 const playerInput = (vector, state = {}) => {
     const { map } = state;
-    if (moveEntity(vector, state.movableEntities[0], state)) moveViewport(vector, state);
+    const player = getEntitiesByType(map, ['player']).pop();
+    if (moveEntity(vector, player, state)) centerViewport(state);
     const entities = getEntitiesByType(map,['enemy', 'player']);
     entities.forEach(entity => {
         let dice = _.random(0,100);
@@ -113,12 +125,12 @@ class Game extends Component {
     };
 
     componentDidMount() {
-        window.addEventListener('keydown', _.throttle(this.handleKeyPress, 100));
+        window.addEventListener('keydown', _.throttle(this.handleKeyPress, 300));
        //  window.addEventListener('resize', _.debounce(this.handleResize, 500));
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', _.throttle(this.handleKeyPress, 100));
+        window.removeEventListener('keydown', _.throttle(this.handleKeyPress, 300));
         // window.removeEventListener('resize', _.debounce(this.handleResize, 500));
     }
 
@@ -127,6 +139,7 @@ class Game extends Component {
         const player = getEntitiesByType(map, ['player']).pop();
         return (
             <div className='app'>
+                <Sound url={music} playStatus={'PLAYING'} loop={true}/>
                 <div className='flex-container'>
                     <div className='hud'>
                         <div className='character-info'>
@@ -148,6 +161,7 @@ class Game extends Component {
                         </div>
                     </div>
                    <Viewport
+                       player={player}
                        viewPortCords={viewPortCords}
                        width={width}
                        height={height}
