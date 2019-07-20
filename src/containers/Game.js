@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Sound from 'react-sound'
 import _ from 'lodash'
 import Viewport from '../components/Viewport'
 import LifeBar from '../components/LifeBar'
@@ -7,7 +6,8 @@ import './Game.scss'
 import { createEntities, moveEntity, getEntitiesByType } from '../helpers/entities'
 import { createMap, madeShadowMist } from '../helpers/dungeon'
 import Checkbox from '../components/Checkbox'
-import music from '../assets/sound/music/DiscoDescent.mp3'
+import Music from '../components/Music'
+import StartScreen from '../components/StartScreen'
 
 
 const createLevel = (levelNumber = 1) => {
@@ -23,6 +23,7 @@ const createLevel = (levelNumber = 1) => {
         },
         showShadows: true,
         displayDevInfo: false,
+        startLevel: false,
     };
     // const [px, py] = state.playerPosition;
     centerViewport(state); // moveViewport([px - Math.floor(state.viewPort.width / 2), py - Math.floor(state.viewPort.height / 2)], state);
@@ -86,8 +87,36 @@ const playerInput = (vector, state = {}) => {
         if (willMove) moveEntity(vector, entity, state)
     });
     madeShadowMist(map)
-
 };
+
+let audio;
+/*
+soundManager.setup({
+    useFastPolling: true,
+    useHighPerformance: true,
+    onready: function() {
+        audio = soundManager.createSound({
+            id: 'audio',
+            url: 'http://curriculum.fer.cc/game/static/media/DiscoDescent.b2903088.mp3',
+            onload: () => {
+               // player.timeTotal.textContent = formatMilliseconds(audio.duration);
+                alert('loaded');
+            },
+           /* onfinish: function() {
+                var event;
+                try {
+                    // Internet Explorer doesn't like this statement
+                    event = new Event('click');
+                } catch (ex) {
+                    event = document.createEvent('MouseEvent');
+                    event.initEvent('click', true, false);
+                }
+                player.btnStop.dispatchEvent(event);
+            } */
+       /* });
+        setTimeout(() => audio.play(), 1000)
+    }
+});*/
 
 class Game extends Component {
     state = createLevel();
@@ -135,12 +164,13 @@ class Game extends Component {
     }
 
     render() {
-        const { map, viewPortCords, viewPort: {width, height}, showShadows, displayDevInfo } = this.state;
+        const { map, viewPortCords, viewPort: {width, height}, showShadows, displayDevInfo, startLevel } = this.state;
         const player = getEntitiesByType(map, ['player']).pop();
         return (
             <div className='app'>
-                <Sound url={music} playStatus={'PLAYING'} loop={true}/>
-                <div className='flex-container'>
+                {!startLevel && <StartScreen onClick={() => this.setState({ startLevel: true })} /> }
+                <Music startMusic={startLevel} />
+               {startLevel && <div className='flex-container'>
                     <div className='hud'>
                         <div className='character-info'>
                             <div className='background'/>
@@ -168,7 +198,7 @@ class Game extends Component {
                        map={map}
                        showShadows={showShadows}
                        displayDevInfo={displayDevInfo} />
-                </div>
+                </div> }
             </div>
         )
     }

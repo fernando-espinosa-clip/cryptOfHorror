@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import UIfx from 'uifx'
+import playerAttackSound from '../assets/sound/en_blademaster_attack_near.mp3'
+import enemyAttackSound from '../assets/sound/en_skeleton_knight_attack.mp3'
 
+const playerAttack = new UIfx({asset: playerAttackSound});
+const enemyAttack = new UIfx({asset: enemyAttackSound});
 // let jump = true;
 
 class DungeonEntity extends Component {
@@ -36,6 +41,10 @@ class DungeonEntity extends Component {
             }
 
             setTimeout(() => { this.pause(node); }, 200);
+        }
+        if(entity.action === 'attack') {
+            if (entity.type === 'player') playerAttack.play()
+            if (entity.type === 'enemy') enemyAttack.play()
         }
         return (
             <div

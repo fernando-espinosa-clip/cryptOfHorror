@@ -15,7 +15,7 @@ export const createEntities = (gameMap, level = 1) => {
     }
 
     const enemies = [];
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 14; i++) {
         const enemyLevel = _.random(level, _.random(level - 1 ? level - 1 : level, level + 1));
         enemies.push({
             health: level * 30 + 40,
@@ -166,11 +166,13 @@ export const moveEntity = (vector, entity = {}, state = {}) => {
     if (map[deltaY][deltaX].entity){
         if (map[deltaY][deltaX].entity.type === 'enemy' || map[deltaY][deltaX].entity.type === 'player') {
             let enemy = map[deltaY][deltaX];
+            entity.action = 'attack';
             enemy.entity.hp -= entity.weapon.baseDamage();
             if ( enemy.entity.hp <= 0) enemy.entity = null
         }
         return false;
     }
+    entity.action = '';
     if (entity.type === 'player') state.playerPosition = [deltaX, deltaY];
     map[py][px].entity = null;
     map[deltaY][deltaX].entity = entity;

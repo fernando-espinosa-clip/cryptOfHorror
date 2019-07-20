@@ -13,7 +13,9 @@
     "react-sound": "^1.2.0",
     "redux": "^4.0.1",
     "redux-batched-actions": "^0.4.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "soundmanager2": "^2.97.20170602",
+    "uifx": "^1.0.8"
   },
   "scripts": {
     "start": "react-scripts start",
