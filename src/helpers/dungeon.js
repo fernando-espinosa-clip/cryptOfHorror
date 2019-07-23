@@ -180,11 +180,3 @@ export const madeShadowMist = (map) => {
         return cell;
     }));
 };
-
-export const madeShadowMist_ = (map) => {
-    const player = getEntitiesByType(map, ['player']).pop();
-    map.forEach((row, i) => row.forEach((cell, j) => {
-        cell.distanceFromPlayer = (Math.abs(player.position[1] - i)) + (Math.abs(player.position[0] - j));
-        cell.cords = [j, i]
-    }));
-};
