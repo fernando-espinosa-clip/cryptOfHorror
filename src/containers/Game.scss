@@ -1,40 +1,39 @@
-$scale: 0.85;
+$scale: 1.25;
 body {
   background-color: black;
 }
 
 .app {
- /* display: flex;
+  /* display: flex;
   justify-content: center; */
   display: block;
   position: relative;
   margin: 0 auto;
-
 }
 
 @-webkit-keyframes jump {
-  0%{
+  0% {
     -webkit-transform: translateY(0);
     transform: translateY(0);
   }
-  50%{
+  50% {
     -webkit-transform: translateY(-30px);
     transform: translateY(-30px);
   }
-  100%{
+  100% {
     -webkit-transform: translateY(0);
     transform: translateY(0);
   }
 }
 
 @keyframes jump {
-  0%{
+  0% {
     transform: translateY(0);
   }
-  50%{
+  50% {
     transform: translateY(-30px);
   }
-  100%{
+  100% {
     transform: translateY(0);
   }
 }
@@ -42,22 +41,22 @@ body {
 .sprite {
   position: absolute;
   z-index: 100000;
-  transition: all 0.2s;
- &.jump {
-   -webkit-animation: jump 0.2s ease-out 0s infinite normal ;
-   animation: jump 0.2s ease-out 0s infinite normal ;
- }
+  transition: all 0.3s;
+  &.jump {
+    -webkit-animation: jump 0.3s ease-out 0s infinite normal;
+    animation: jump 0.3s ease-out 0s infinite normal;
+  }
 }
 
 .jump {
-  -webkit-animation: jump 0.2s ease-out 0s infinite normal ;
-  animation: jump 0.2s ease-out 0s infinite normal ;
+  -webkit-animation: jump 0.3s ease-out 0s infinite normal;
+  animation: jump 0.3s ease-out 0s infinite normal;
 }
 
 .row {
-  display: flex;
+  // display: flex;
   // justify-content: center;
-
+  display: block;
 }
 
 .weapon {
@@ -69,10 +68,11 @@ body {
 }
 
 .flex-container {
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid white;
   overflow: hidden;
   position: relative;
-  width: 1224px;
+  width: 20 * $scale * 48px;
+  height: 10 * $scale * 48px;
   margin: 0 auto;
   background-color: #000;
   .hud {
@@ -80,7 +80,7 @@ body {
     top: 5px;
     left: 5px;
     z-index: 100;
-    font-family: 'Press Start 2P', cursive;
+    font-family: "Press Start 2P", cursive;
     .dev-info {
       position: relative;
       top: 65px;
@@ -89,7 +89,7 @@ body {
       color: white;
       font-size: 8px;
     }
-    .character-info{
+    .character-info {
       position: absolute;
       .weapon {
         position: absolute;
@@ -101,7 +101,7 @@ body {
         position: absolute;
         width: 211px;
         height: 65px;
-        background-image: url('../assets/images/hud/char-hud.png');
+        background-image: url("../assets/images/hud/char-hud.png");
         z-index: 10;
       }
     }
@@ -110,37 +110,42 @@ body {
     }
     .text {
       position: absolute;
-      top:8px;
-      left:8px;
+      top: 8px;
+      left: 8px;
       font-size: 9px;
       color: white;
-      text-shadow: 2px 2px 1px rgba(0,0,0,0.68);
+      text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.68);
     }
     .l-frame {
       width: 24px;
       height: 24px;
-      background-image: url('../assets/images/hud/l-frame.png');
+      background-image: url("../assets/images/hud/l-frame.png");
     }
     .r-frame {
       width: 24px;
       height: 24px;
-      background-image: url('../assets/images/hud/r-frame.png');
+      background-image: url("../assets/images/hud/r-frame.png");
     }
     .m-frame {
       width: 24px;
       height: 24px;
-      background-image: url('../assets/images/hud/m-frame.png');
+      background-image: url("../assets/images/hud/m-frame.png");
     }
   }
 }
 
 .cell {
   height: 48px * $scale;
-  width:  48px * $scale;
+  width: 48px * $scale;
   // border: 1px solid black;
-  position: relative;
-  // transition: all 0.5s;
+  //position: relative;
+  position: absolute;
+  transition: all 0.3s;
   background-color: #000;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
   div {
     margin: 0 auto;
   }
@@ -157,14 +162,14 @@ body {
     color: transparent;
     border-color: transparent;
     &:hover {
-      color: rgba(255,255,255,0.9);
-      border: 1px solid rgba(255,0,0,0.5);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 0, 0, 0.5);
     }
   }
 
   .entity {
     height: 48px * $scale;
-    width:  48px * $scale;
+    width: 48px * $scale;
     background-size: cover;
     position: absolute;
     top: 0;
@@ -173,20 +178,20 @@ body {
       &.slime {
         height: 52px * $scale;
         top: -5px * $scale;
-        background-image: url('../assets/images/enemies/slime/animation001.gif');
+        background-image: url("../assets/images/enemies/slime/animation001.gif");
         z-index: 20;
       }
       &.skeleton {
         height: 52px * $scale;
         top: -5px * $scale;
-        background-image: url('../assets/images/enemies/skeleton/animation002.gif');
+        background-image: url("../assets/images/enemies/skeleton/animation002.gif");
         z-index: 20;
       }
     }
     &.player {
-      background-image: url('../assets/images/player/player001.gif');
+      background-image: url("../assets/images/player/player001.gif");
       z-index: 20;
-      top: -10px  * $scale;
+      top: -10px * $scale;
     }
     &.left {
       -webkit-transform: scaleX(-1);
@@ -196,83 +201,83 @@ body {
 
   .floor {
     height: 48px * $scale;
-    width:  48px * $scale;
+    width: 48px * $scale;
     background-size: cover;
     &.tile00 {
-      background-image: url('../assets/images/floor/tile000.png');
+      background-image: url("../assets/images/floor/tile000.png");
     }
     &.tile01 {
-      background-image: url('../assets/images/floor/tile001.png');
+      background-image: url("../assets/images/floor/tile001.png");
     }
     &.tile02 {
-      background-image: url('../assets/images/floor/tile002.png');
+      background-image: url("../assets/images/floor/tile002.png");
     }
     &.tile03 {
-      background-image: url('../assets/images/floor/tile003.png');
+      background-image: url("../assets/images/floor/tile003.png");
     }
     &.tile04 {
-      background-image: url('../assets/images/floor/tile004.png');
+      background-image: url("../assets/images/floor/tile004.png");
     }
     &.tile05 {
-      background-image: url('../assets/images/floor/tile005.png');
+      background-image: url("../assets/images/floor/tile005.png");
     }
   }
 
   .wall {
     height: 84px * $scale;
-    width:  48px * $scale;
+    width: 48px * $scale;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 10;
     background-size: cover;
     &.tile00 {
-      background-image: url('../assets/images/wall/tile000.png');
+      background-image: url("../assets/images/wall/tile000.png");
     }
     &.tile01 {
-      background-image: url('../assets/images/wall/tile001.png');
+      background-image: url("../assets/images/wall/tile001.png");
     }
     &.tile02 {
-      background-image: url('../assets/images/wall/tile002.png');
+      background-image: url("../assets/images/wall/tile002.png");
     }
     &.tile03 {
-      background-image: url('../assets/images/wall/tile003.png');
+      background-image: url("../assets/images/wall/tile003.png");
     }
     &.tile04 {
-      background-image: url('../assets/images/wall/tile004.png');
+      background-image: url("../assets/images/wall/tile004.png");
     }
     &.tile05 {
-      background-image: url('../assets/images/wall/tile005.png');
+      background-image: url("../assets/images/wall/tile005.png");
     }
     &.tile06 {
-      background-image: url('../assets/images/wall/tile006.png');
+      background-image: url("../assets/images/wall/tile006.png");
     }
     &.tile07 {
-      background-image: url('../assets/images/wall/tile007.png');
+      background-image: url("../assets/images/wall/tile007.png");
     }
     &.tile08 {
-      background-image: url('../assets/images/wall/tile008.png');
+      background-image: url("../assets/images/wall/tile008.png");
     }
     &.tile09 {
-      background-image: url('../assets/images/wall/tile009.png');
+      background-image: url("../assets/images/wall/tile009.png");
     }
     &.tile10 {
-      background-image: url('../assets/images/wall/tile010.png');
+      background-image: url("../assets/images/wall/tile010.png");
     }
     &.tile11 {
-      background-image: url('../assets/images/wall/tile011.png');
+      background-image: url("../assets/images/wall/tile011.png");
     }
     &.tile12 {
-      background-image: url('../assets/images/wall/tile012.png');
+      background-image: url("../assets/images/wall/tile012.png");
     }
     &.tile13 {
-      background-image: url('../assets/images/wall/tile013.png');
+      background-image: url("../assets/images/wall/tile013.png");
     }
     &.tile14 {
-      background-image: url('../assets/images/wall/tile014.png');
+      background-image: url("../assets/images/wall/tile014.png");
     }
     &.tile15 {
-      background-image: url('../assets/images/wall/tile015.png');
+      background-image: url("../assets/images/wall/tile015.png");
     }
   }
 
@@ -280,23 +285,23 @@ body {
     background-size: cover;
     width: 48px * $scale;
     height: 48px * $scale;
-    background-image: url('../assets/images/floor/tile000.png');
+    background-image: url("../assets/images/floor/tile000.png");
   }
 
   .door {
     &.tile00 {
-      background-image: url('../assets/images/wall/door000.png');
+      background-image: url("../assets/images/wall/door000.png");
     }
     &.tile01 {
-      background-image: url('../assets/images/wall/door001.png');
+      background-image: url("../assets/images/wall/door001.png");
       /* width: 14px * $scale;
       height: 84px * $scale; */
       left: 1px * $scale;
-      top:0;
+      top: 0;
     }
     // background: red;
     height: 48px * $scale;
-    width:  48px * $scale;
+    width: 48px * $scale;
     position: absolute;
     background-size: cover;
     top: 6px;
@@ -304,4 +309,3 @@ body {
     z-index: 10;
   }
 }
-
