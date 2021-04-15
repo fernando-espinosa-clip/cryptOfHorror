@@ -55,7 +55,7 @@ const createLevel = () => {
   return state;
 };
 
-const moveViewport = (vector, state) => {
+/* const moveViewport = (vector, state) => {
   const [x, y] = vector;
   const {
     map,
@@ -73,7 +73,7 @@ const moveViewport = (vector, state) => {
   state.viewPortCords = [vpx, vpy];
   return state;
 };
-
+*/
 const centerViewport = state => {
   const { viewPort, viewPortCords } = state;
   const player = getEntitiesByType(map, ["player"]).pop();
